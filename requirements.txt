@@ -1,0 +1,4 @@
+flask
+loguru
+WTForms
+python-environ
