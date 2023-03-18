@@ -82,7 +82,7 @@ class MachineStruct(cstruct.MemCStruct):
                 short AUXFanMinDamperStart;
                 short AUXFanData1;
                 short AUXFanData2;
-            } damper;
+            } auxfan;
             short arrayD1[3]; // ХЗ что это 
             struct {
                 short totalTimeDays;
