@@ -3,3 +3,5 @@ loguru
 WTForms
 python-environ
 click
+cstruct
+construct
