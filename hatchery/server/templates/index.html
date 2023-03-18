@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="ui segment" id="body_seg">
+    <h1>Цып-цып-цып!</h1>
+    <div class="ui segment" id="form_seg">
+
+        <form method="POST" class="ui form">
+            <div class="six wide field">
+                <label>Файл данных инкубатора</label>
+                <div class="ui action input">
+                    <input type="file" id="refractive_files_hidden" multiple style="display:none">
+                    <input type="hidden" name="refractive_folder_id"/>
+                    <div class="ui segment">
+                        <p>
+                            <div id="refractive_list" class="ui list">
+                                <div class="item">
+                                    No files loaded
+                                </div>
+                            </div>
+                        </p>
+                        <button id="refractive_btn" class="ui bottom right attached label icon button">
+                            <i class="folder open icon"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="two fields">
+                    <div class="three wide field">
+                        <label>Параметр 1</label>
+                        <input type="text" name="path_length" value='0.005024' placeholder="Path length">
+                    </div>
+                    <div class="three wide field">
+                        <label>Параметр 2</label>
+                        <input type="text" name="concentration" value='0' placeholder="Concentraction">
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Диапазон 3</label>
+                <div class="two fields">
+                    <div class="three wide field">
+                        <input type="text" name="start_wave" value='10' placeholder="Start wave">
+                    </div>
+                    <div class="three wide field">
+                        <input type="text" name="end_wave" value='100' placeholder="End wave">
+                    </div>
+                </div>
+            </div>
+            <button class="ui button" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+<!--
+    jQuery starts here
+-->
+<script type="text/javascript">
+    var path_buttons = ["refractive", "transmittance"];
+
+    const files_list_update = (name, files, folder_id) => {
+        const $list = $('div#' + name + '_list');
+        $list.empty();
+
+        Object.keys(files).forEach(file_id => {
+            let $file_item = $("<div class='item'>" + files[file_id] + "</div>");
+            $list.append($file_item);
+        })
+        console.log('input#' + name + '_folder_id', folder_id, $('input#' + name + '_folder_id'))
+        $('input[name="' + name + '_folder_id"]').val(folder_id)
+    }
+
+    path_buttons.forEach(item => {
+        var file_input = $(`input[id="${item}_files_hidden"]`)
+        $(`button#${item}_btn`).on('click', (event) => {
+            event.preventDefault();
+            file_input.trigger('click');
+        })
+        file_input.on('change', (event) => {
+            // prepare form data
+            var formData = new FormData();
+            formData.append('name', 'John');
+
+            // Attach file
+            $input_files = $(`input[type=file][id=${item}_files_hidden]`)[0].files
+            for (let  i = 0; i < $input_files.length; i++) {
+                //console.log($input_files[i])
+                formData.append('files[]', $input_files[i], $input_files[i].name);
+                //console.log(formData)
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: "{{url_for('main_bp.upload_files')}}",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data : formData,
+                success: function(result){
+                    files_list_update(item, result['files'], result['folder_id'])
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

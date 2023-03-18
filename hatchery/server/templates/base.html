@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Инкубатор</title>
+		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon_2_16x16.ico') }}">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.css">
+		<script
+		  src="https://code.jquery.com/jquery-3.1.1.min.js"
+		  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+		  crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.5.0/dist/semantic.min.js"></script>
+		{% block header %}{% endblock %}
+	</head>
+	<body>
+		<div class="ui secondary pointing menu">
+			<div class="item">
+				<!-- <img src="{{ url_for('main_bp.static', filename='imgs/logo.png') }}"> -->
+				<i class="flask icon big"></i>
+			</div>
+			<a class='item' href="{{ url_for('main_bp.index') }}">
+				Главная
+			</a>
+			<a class='item' href="">
+				Файлы
+			</a>
+			<a class='item' href="{{ url_for('main_bp.visual') }}">
+				Визуализация
+			</a>
+		</div>
+		{% block content %}{% endblock %}
+		<script>
+			$('a.active').removeClass('active')
+			var $item = $("a[href='" + location.pathname + "']")
+			$item.addClass('active')
+		</script>
+	</body>
+</html>

@@ -2,3 +2,4 @@ flask
 loguru
 WTForms
 python-environ
+click
